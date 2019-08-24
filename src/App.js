@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/less/style.css';
+import './styles/style.css';
 import PropTypes from 'prop-types';
 import Stepper, { STEPPER_DIRECTION } from './Stepper';
 
