@@ -1,7 +1,7 @@
 import React from 'react';
 import './styles/style.css';
-import PropTypes from 'prop-types';
 import Stepper, { STEPPER_DIRECTION } from './Stepper';
+import GLOBAL_FUNCTIONS from './scripts/global-functions';
 
 const STEP = [
 	{ activeKey: 1, title: 'Supplier' },
@@ -11,23 +11,55 @@ const STEP = [
 ];
 
 const App = () => {
-	const [activeHorizontalKey, setStateHorizontal] = React.useState(1);
-	const [activeVerticalKey, setStateVertical] = React.useState(1);
+	const [stateV, setStateV] = React.useState({
+		active: 1,
+		visited: [],
+		activated: STEP[0],
+	});
+	const [stateH, setStateH] = React.useState({
+		active: 1,
+		visited: [],
+		activated: STEP[0],
+	});
 	const onChangeHorizontal = step => {
-		setStateHorizontal(step);
+		const arr_visited = STEP.filter(e => {
+			return e.activeKey < step;
+		});
+		const arr_activated = STEP.filter(e => {
+			return e.activeKey === step;
+		});
+		setStateH(
+			GLOBAL_FUNCTIONS.SetObject(stateH, {
+				active: step,
+				visited: arr_visited,
+				activated: arr_activated,
+			})
+		);
 	};
 	const onChangeVertical = step => {
-		setStateVertical(step);
+		const arr_visited = STEP.filter(e => {
+			return e.activeKey < step;
+		});
+		const arr_activated = STEP.filter(e => {
+			return e.activeKey === step;
+		});
+		setStateV(
+			GLOBAL_FUNCTIONS.SetObject(stateV, {
+				active: step,
+				visited: arr_visited,
+				activated: arr_activated,
+			})
+		);
 	};
 	const props_h = {
 		onChange: onChangeHorizontal,
-		activeStepKey: activeHorizontalKey,
+		activeStepKey: stateH.active,
 		data: STEP,
 		direction: STEPPER_DIRECTION.HORIZONTAL,
 	};
 	const props_v = {
 		onChange: onChangeVertical,
-		activeStepKey: activeVerticalKey,
+		activeStepKey: stateV.active,
 		data: STEP,
 		direction: STEPPER_DIRECTION.VERTICAL,
 	};
